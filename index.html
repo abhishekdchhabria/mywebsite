@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abhishek Chhabria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+
+    /* ── THEME TOKENS ── */
+    [data-theme="light"] {
+      --bg:         #fafaf8;
+      --surface:    #f2f2ef;
+      --surface2:   #e8e8e4;
+      --border:     #dcdcd6;
+      --border2:    #c8c8c0;
+      --blue:       #1a5fd4;
+      --blue2:      #2f7eea;
+      --blue-dim:   #a8c4f0;
+      --text:       #111111;
+      --muted:      #777777;
+      --soft:       #555555;
+      --heading:    #0a0a0a;
+      --nav-bg:     rgba(250,250,248,0.94);
+      --modal-bg:   rgba(255,255,255,0.95);
+    }
+
+    [data-theme="dark"] {
+      --bg:         #080808;
+      --surface:    #111111;
+      --surface2:   #181818;
+      --border:     #222222;
+      --border2:    #2e2e2e;
+      --blue:       #2f7eea;
+      --blue2:      #5b9ef5;
+      --blue-dim:   #1a3f6f;
+      --text:       #f0f0f0;
+      --muted:      #666666;
+      --soft:       #999999;
+      --heading:    #ffffff;
+      --nav-bg:     rgba(8,8,8,0.94);
+      --modal-bg:   rgba(17,17,17,0.98);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5rem;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s, border-color 0.35s;
+    }
+    nav.scrolled {
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--heading);
+      letter-spacing: 0.02em;
+      transition: color 0.35s;
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.cta {
+      padding: 0.45rem 1.2rem;
+      background: var(--blue);
+      color: #ffffff;
+      border-radius: 2px;
+      letter-spacing: 0.08em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-links a.cta:hover { background: var(--blue2); transform: translateY(-1px); }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 0.3rem 0.7rem;
+      background: var(--surface);
+      transition: border-color 0.2s, background 0.35s;
+      user-select: none;
+    }
+    .theme-toggle:hover { border-color: var(--blue); }
+
+    .toggle-track {
+      width: 32px;
+      height: 17px;
+      border-radius: 10px;
+      background: var(--border2);
+      position: relative;
+      transition: background 0.3s;
+    }
+    [data-theme="dark"] .toggle-track { background: var(--blue); }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: #ffffff;
+      transition: transform 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    [data-theme="dark"] .toggle-thumb { transform: translateX(15px); }
+
+    .toggle-icon {
+      font-size: 0.8rem;
+      line-height: 1;
+      transition: opacity 0.3s;
+    }
+
+    /* ── HERO ── */
+    #about {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 5rem 5rem 4rem;
+      position: relative;
+      z-index: 1;
+      gap: 5rem;
+    }
+
+    #about::after {
+      content: '';
+      position: absolute;
+      top: 10%; right: 5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(47,126,234,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-left { position: relative; z-index: 1; }
+
+    .hero-overline {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.1s;
+    }
+    .hero-overline-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+    }
+    .hero-overline span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      color: var(--blue2);
+      text-transform: uppercase;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 5.5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--heading);
+      margin-bottom: 0.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.25s;
+      transition: color 0.35s;
+    }
+    .hero-name em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--soft);
+    }
+
+    .hero-rule {
+      width: 48px; height: 2px;
+      background: var(--blue);
+      margin: 1.8rem 0;
+      opacity: 0;
+      animation: fadeIn 0.7s ease forwards 0.38s;
+    }
+
+    .hero-bio {
+      font-size: 0.97rem;
+      color: var(--soft);
+      max-width: 440px;
+      line-height: 1.9;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.45s;
+      transition: color 0.35s;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.55s;
+    }
+    .hero-tag {
+      padding: 0.28rem 0.75rem;
+      border: 1px solid var(--border2);
+      border-radius: 2px;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      background: var(--surface);
+      transition: background 0.35s, border-color 0.35s, color 0.35s;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.65s;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 0.76rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.22s;
+    }
+    .btn-primary { background: var(--blue); color: #ffffff; }
+    .btn-primary:hover { background: var(--blue2); transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      background: transparent;
+    }
+    .btn-outline:hover { border-color: var(--blue); color: var(--blue2); transform: translateY(-2px); }
+
+    /* ── PHOTO ── */
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 0.4s;
+    }
+    .photo-wrap { position: relative; width: 300px; height: 380px; }
+    .photo-frame {
+      width: 100%; height: 100%;
+      border-radius: 2px;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .photo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--blue-dim);
+      border-radius: 2px;
+      transform: translate(10px, 10px);
+      z-index: 0;
+      opacity: 0.6;
+      transition: border-color 0.35s;
+    }
+
+    /*
+    =============================================
+    TO ADD YOUR PHOTO:
+    1. Save your image as "photo.jpg" in the
+       same folder as this index.html file
+    2. Delete the div.photo-placeholder below
+    3. Uncomment the img tag:
+       <img src="photo.jpg" alt="Abhishek Chhabria"
+            style="width:100%;height:100%;object-fit:cover;object-position:center top;" />
+    =============================================
+    */
+
+    .photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--muted);
+    }
+    .photo-placeholder svg { opacity: 0.25; }
+    .photo-placeholder span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.4;
+    }
+
+    /* ── SHARED SECTION ── */
+    section { padding: 6rem 5rem; position: relative; z-index: 1; }
+
+    .section-header { margin-bottom: 3.5rem; }
+    .section-overline {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+    .section-overline-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+    }
+    .section-overline span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--blue2);
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3vw, 2.7rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      color: var(--heading);
+      transition: color 0.35s;
+    }
+    .section-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--soft);
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 5rem;
+      transition: background 0.35s;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg); transition: background 0.35s; }
+
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: background 0.35s, border-color 0.35s;
+    }
+
+    .case-card {
+      background: var(--surface);
+      cursor: pointer;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .case-card:hover { background: var(--surface2); }
+
+    .case-card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .case-card:hover .case-card-accent { transform: scaleX(1); }
+
+    .case-card-body { padding: 2rem 2.2rem; }
+
+    .case-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+    }
+    .case-company {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--heading);
+      transition: color 0.35s;
+    }
+    .case-open-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      transition: color 0.2s;
+      white-space: nowrap;
+      margin-top: 4px;
+    }
+    .case-card:hover .case-open-btn { color: var(--blue2); }
+
+    .case-role { font-size: 0.8rem; color: var(--blue2); font-weight: 400; margin-bottom: 0.3rem; }
+    .case-dates {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.6rem;
+    }
+
+    .case-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.35s;
+    }
+    .case-pillar {
+      padding: 0.8rem 0.9rem;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .case-pillar:last-child { border-right: none; }
+    .case-pillar-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.35rem;
+    }
+    .case-pillar-text {
+      font-size: 0.76rem;
+      color: var(--soft);
+      line-height: 1.45;
+      transition: color 0.35s;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--modal-bg);
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s, background 0.35s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-top-bar { height: 2px; background: var(--blue); }
+    .modal-inner { padding: 2.5rem 2.8rem 2.8rem; }
+
+    .modal-close {
+      position: absolute;
+      top: 1.4rem; right: 1.6rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    .modal-company {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.3rem;
+      transition: color 0.35s;
+    }
+    .modal-role { font-size: 0.85rem; color: var(--blue2); margin-bottom: 0.25rem; }
+    .modal-dates {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      padding-bottom: 1.6rem;
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+    .modal-text {
+      font-size: 0.9rem;
+      color: var(--soft);
+      line-height: 1.85;
+      margin-bottom: 1.8rem;
+      transition: color 0.35s;
+    }
+    .modal-impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .modal-impact-item {
+      background: var(--surface);
+      padding: 1.2rem 1rem;
+      text-align: center;
+      transition: background 0.35s;
+    }
+    .modal-impact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--blue2);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .modal-impact-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--surface); transition: background 0.35s; }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .edu-card {
+      padding: 2.2rem 2.4rem;
+      background: var(--bg);
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .edu-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .edu-card:hover::after { transform: scaleX(1); }
+    .edu-card:hover { background: var(--surface2); }
+
+    .edu-school {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 0.3rem;
+      transition: color 0.35s;
+    }
+    .edu-degree { font-size: 0.82rem; color: var(--blue2); margin-bottom: 0.5rem; }
+    .edu-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .edu-detail { font-size: 0.83rem; color: var(--muted); line-height: 1.75; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg); transition: background 0.35s; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .skill-group {
+      padding: 1.8rem 2rem;
+      background: var(--surface);
+      transition: background 0.35s;
+    }
+    .skill-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .skill-tag {
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--border2);
+      border-radius: 2px;
+      font-size: 0.74rem;
+      color: var(--muted);
+      background: var(--bg);
+      transition: border-color 0.2s, color 0.2s, background 0.35s;
+      cursor: default;
+    }
+    .skill-tag:hover { border-color: var(--blue); color: var(--blue2); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.4rem 5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.35s;
+    }
+    .footer-left {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--blue2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      #about { grid-template-columns: 1fr; padding: 7rem 2.5rem 4rem; gap: 3rem; }
+      .hero-right { display: none; }
+      nav { padding: 1.1rem 2.5rem; }
+      .nav-links { gap: 1.2rem; }
+      section { padding: 5rem 2.5rem; }
+      .edu-grid, .skills-grid, .exp-grid { grid-template-columns: 1fr; }
+      .modal-impact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Abhishek Chhabria</div>
+  <div class="nav-links">
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#skills">Skills</a>
+
+    <!-- THEME TOGGLE -->
+    <div class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+      <span class="toggle-icon">&#9788;</span>
+      <div class="toggle-track">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-icon">&#9790;</span>
+    </div>
+
+    <a href="mailto:achhabri@andrew.cmu.edu" class="cta">Get in touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="about">
+  <div class="hero-left">
+    <div class="hero-overline">
+      <div class="hero-overline-dot"></div>
+      <span>Product &amp; Strategy</span>
+    </div>
+    <h1 class="hero-name">Abhishek<br><em>Chhabria</em></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-bio">
+      MS Business Analytics candidate at Carnegie Mellon's Tepper School of Business.
+      Former Deloitte Consultant with 3+ years leading digital transformation at scale.
+      I sit at the intersection of data, product, and strategy.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">Product Management</span>
+      <span class="hero-tag">Tech Consulting</span>
+      <span class="hero-tag">Business Analytics</span>
+      <span class="hero-tag">Agile &amp; Scrum</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="mailto:achhabri@andrew.cmu.edu" class="btn btn-primary">Get in touch &rarr;</a>
+      <a href="https://linkedin.com/in/abhishekchhabria" target="_blank" class="btn btn-outline">LinkedIn &#8599;</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="photo-wrap">
+      <div class="photo-frame">
+        <img src="photo.jpg" alt="Abhishek Chhabria"
+             style="width:100%;height:100%;object-fit:cover;object-position:center top;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="divider"></div>
+  <div class="section-header reveal">
+    <div class="section-overline">
+      <div class="section-overline-dot"></div>
+      <span>Experience</span>
+    </div>
+    <h2 class="section-title">Where I've <em>Made an Impact</em></h2>
+  </div>
+  <div class="exp-grid">
+
+    <div class="case-card reveal" onclick="openModal('rbc')">
+      <div class="case-card-accent"></div>
+      <div class="case-card-body">
+        <div class="case-meta">
+          <div class="case-company">RBC Capital Markets</div>
+          <span class="case-open-btn">View case &#8599;</span>
+        </div>
+        <div class="case-role">Business Analytics Consultant &middot; MSBA Capstone</div>
+        <div class="case-dates">Jan 2026 &ndash; Present &nbsp;&middot;&nbsp; Pittsburgh, PA</div>
+        <div class="case-pillars">
+          <div class="case-pillar">
+            <div class="case-pillar-label">Problem</div>
+            <div class="case-pillar-text">Understanding next-gen wealth transfer behaviors</div>
+          </div>
+          <div class="case-pillar">
+            <div class="case-pillar-label">Approach</div>
+            <div class="case-pillar-text">Segmentation &amp; archetype analysis</div>
+          </div>
+          <div class="case-pillar">
+            <div class="case-pillar-label">Impact</div>
+            <div class="case-pillar-text">5+ exec recommendations driving retention strategy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card reveal" onclick="openModal('deloitte-consultant')">
+      <div class="case-card-accent"></div>
+      <div class="case-card-body">
+        <div class="case-meta">
+          <div class="case-company">Deloitte Consulting</div>
+          <span class="case-open-btn">View case &#8599;</span>
+        </div>
+        <div class="case-role">Consultant</div>
+        <div class="case-dates">May 2024 &ndash; Jun 2025 &nbsp;&middot;&nbsp; San Francisco, CA</div>
+        <div class="case-pillars">
+          <div class="case-pillar">
+            <div class="case-pillar-label">Problem</div>
+            <div class="case-pillar-text">Modernizing DMV's vehicle registration system</div>
+          </div>
+          <div class="case-pillar">
+            <div class="case-pillar-label">Approach</div>
+            <div class="case-pillar-text">Led 5-member team; product design &amp; roadmapping</div>
+          </div>
+          <div class="case-pillar">
+            <div class="case-pillar-label">Impact</div>
+            <div class="case-pillar-text">10 transactions live, impacting 39M users</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card reveal" onclick="openModal('deloitte-ba')">
+      <div class="case-card-accent"></div>
+      <div class="case-card-body">
+        <div class="case-meta">
+          <div class="case-company">Deloitte Consulting</div>
+          <span class="case-open-btn">View case &#8599;</span>
+        </div>
+        <div class="case-role">Business Analyst</div>
+        <div class="case-dates">Sep 2022 &ndash; May 2024 &nbsp;&middot;&nbsp; San Francisco, CA</div>
+        <div class="case-pillars">
+          <div class="case-pillar">
+            <div class="case-pillar-label">Problem</div>
+            <div class="case-pillar-text">Translating complex requirements into delivered product</div>
+          </div>
+          <div class="case-pillar">
+            <div class="case-pillar-label">Approach</div>
+            <div class="case-pillar-text">Agile ceremonies, dashboards &amp; stakeholder demos</div>
+          </div>
+          <div class="case-pillar">
+            <div class="case-pillar-label">Impact</div>
+            <div class="case-pillar-text">300+ user stories, 100+ features tracked to delivery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="divider"></div>
+  <div class="section-header reveal">
+    <div class="section-overline">
+      <div class="section-overline-dot"></div>
+      <span>Education</span>
+    </div>
+    <h2 class="section-title">Academic <em>Foundation</em></h2>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-school">Carnegie Mellon University</div>
+      <div class="edu-degree">MS Business Analytics &mdash; Tepper School of Business</div>
+      <div class="edu-meta">Pittsburgh, PA &nbsp;&middot;&nbsp; Aug 2025 &ndash; May 2026 &nbsp;&middot;&nbsp; GPA 3.94</div>
+      <p class="edu-detail">Probability &amp; Statistics, Statistical Foundations, Modern Data Management, Data Visualization, Optimization, Machine Learning for Business (1 &amp; 2)</p>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-school">University of California, Davis</div>
+      <div class="edu-degree">BS Managerial Economics &mdash; Minor in Computer Science</div>
+      <div class="edu-meta">Davis, CA &nbsp;&middot;&nbsp; Sep 2018 &ndash; May 2022</div>
+      <p class="edu-detail">VP, Davis Consulting Group. Member of Davis Consulting Group and Financial Students Club.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="divider"></div>
+  <div class="section-header reveal">
+    <div class="section-overline">
+      <div class="section-overline-dot"></div>
+      <span>Capabilities</span>
+    </div>
+    <h2 class="section-title">Skills &amp; <em>Tools</em></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Technical &amp; Analytics</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">R / RStudio</span>
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">EDA</span>
+        <span class="skill-tag">Data Visualization</span>
+        <span class="skill-tag">Statistical Analysis</span>
+        <span class="skill-tag">k-means Clustering</span>
+        <span class="skill-tag">Regression</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Product &amp; Consulting</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Product Discovery</span>
+        <span class="skill-tag">Agile / Scrum</span>
+        <span class="skill-tag">Stakeholder Mgmt</span>
+        <span class="skill-tag">Roadmapping</span>
+        <span class="skill-tag">Metrics Definition</span>
+        <span class="skill-tag">Requirements Gathering</span>
+        <span class="skill-tag">Client Communication</span>
+      </div>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Excel (VBA/Macros)</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Salesforce</span>
+        <span class="skill-tag">Jira</span>
+        <span class="skill-tag">Visio</span>
+        <span class="skill-tag">Google Colab</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">Abhishek Chhabria</div>
+  <div class="footer-links">
+    <a href="mailto:achhabri@andrew.cmu.edu">Email</a>
+    <a href="https://linkedin.com/in/abhishekchhabria" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modal">
+    <div class="modal-top-bar"></div>
+    <div class="modal-inner">
+      <button class="modal-close" onclick="closeModal()">&#215;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── THEME TOGGLE ── */
+  var html = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+
+  toggle.addEventListener('click', function() {
+    var current = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ── CASE STUDY DATA ── */
+  var cases = {
+    rbc: {
+      company: 'RBC Capital Markets',
+      role: 'Business Analytics Consultant — MSBA Capstone',
+      dates: 'January 2026 – Present · Pittsburgh, PA',
+      problem: 'RBC needed to understand how the next generation of beneficiaries — the children and heirs of existing wealth management clients — would behave as inheritors of significant assets. With 1,500+ investor accounts under analysis, the question was: how do we retain this next generation before, during, and after wealth transfer events?',
+      approach: 'Led a 4-month structured analytics engagement. Segmented the beneficiary population by portfolio composition, risk tolerance, and behavioral engagement patterns. Applied clustering methodologies to surface distinct investor archetypes and co-developed executive-ready frameworks for advisory and education strategy.',
+      impact: [
+        { number: '4', label: 'Investor Archetypes' },
+        { number: '5+', label: 'Exec Recommendations' },
+        { number: '1,500+', label: 'Accounts Analyzed' }
+      ]
+    },
+    'deloitte-consultant': {
+      company: 'Deloitte Consulting',
+      role: 'Consultant',
+      dates: 'May 2024 – June 2025 · San Francisco, CA',
+      problem: "California's DMV needed to modernize its vehicle registration system — a process touching 39 million users — by digitizing 10 critical transaction types. The challenge was translating complex, legacy business rules into product-ready specifications while managing a diverse set of stakeholders across DMV, UI/UX, and engineering.",
+      approach: 'Directed product design for the digital transformation by leading a 5-member cross-functional team. Applied product design principles to convert complex DMV requirements into actionable specifications and wireframe prototypes. Ran tri-weekly design sessions with stakeholders, UI/UX, and engineering to maintain alignment and drive on-time delivery.',
+      impact: [
+        { number: '10', label: 'Transactions Delivered' },
+        { number: '39M', label: 'Users Impacted' },
+        { number: '5', label: 'Team Members Led' }
+      ]
+    },
+    'deloitte-ba': {
+      company: 'Deloitte Consulting',
+      role: 'Business Analyst',
+      dates: 'September 2022 – May 2024 · San Francisco, CA',
+      problem: 'A large-scale government digital transformation required rigorous translation of client requirements into delivered software — across hundreds of features, multiple stakeholder groups, and a fast-moving Agile delivery cycle. The risk: misalignment between what the client needed and what engineering built.',
+      approach: 'Developed 300+ user stories and facilitated daily refinement sessions using Agile methodology. Built and maintained weekly dashboards tracking 100+ features to surface roadblocks early. Ran iterative product demos with clients to close the feedback loop and ensure adopted functionality matched real user needs.',
+      impact: [
+        { number: '300+', label: 'User Stories Written' },
+        { number: '100+', label: 'Features Tracked' },
+        { number: '2 yrs', label: 'Continuous Delivery' }
+      ]
+    }
+  };
+
+  function openModal(id) {
+    var c = cases[id];
+    if (!c) return;
+    var impactHTML = c.impact.map(function(i) {
+      return '<div class="modal-impact-item">' +
+        '<div class="modal-impact-number">' + i.number + '</div>' +
+        '<div class="modal-impact-label">' + i.label + '</div>' +
+        '</div>';
+    }).join('');
+    document.getElementById('modal-content').innerHTML =
+      '<div class="modal-company">' + c.company + '</div>' +
+      '<div class="modal-role">' + c.role + '</div>' +
+      '<div class="modal-dates">' + c.dates + '</div>' +
+      '<div class="modal-section-label">The Problem</div>' +
+      '<div class="modal-text">' + c.problem + '</div>' +
+      '<div class="modal-section-label">The Approach</div>' +
+      '<div class="modal-text">' + c.approach + '</div>' +
+      '<div class="modal-section-label">The Impact</div>' +
+      '<div class="modal-impact-grid">' + impactHTML + '</div>';
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOnOverlay(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  window.addEventListener('scroll', function() {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.07 });
+    revealEls.forEach(function(el) { obs.observe(el); });
+  } else {
+    revealEls.forEach(function(el) { el.classList.add('visible'); });
+  }
+</script>
+</body>
+</html>
